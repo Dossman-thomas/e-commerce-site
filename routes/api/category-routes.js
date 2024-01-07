@@ -20,7 +20,8 @@ router.get('/', async (req, res) => {
   } catch (error) {
 
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
 
 // The `/api/categories/(specified id)` endpoint
 router.get('/:id', async (req, res) => {
-  
+
   try {
 
   // find one category by its `id` value, include its associated Products
@@ -45,7 +46,8 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 });
@@ -62,8 +64,9 @@ router.post('/', async (req, res) => {
 
   } catch (error) {
 
-     // error handling
-     res.status(500).json({ message: 'Server error.'});
+    // error handling
+    console.error(error);
+    res.status(400).json(error);
 
   }
 
@@ -84,8 +87,9 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
 
     // error handling
-    res.status(500).json({ message: 'Server error.'});
-
+    console.error(error);
+    res.status(400).json(error);
+    
   }
 
 });
@@ -105,7 +109,8 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
 
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 

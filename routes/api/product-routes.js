@@ -6,7 +6,6 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', async (req, res) => {
 
-    
   try {
 
     // find all products include its associated Category and Tag data
@@ -21,18 +20,20 @@ router.get('/', async (req, res) => {
       ]
     });
 
+    // If the retrieval is successful, it responds with a JSON representation of all the products and sets the HTTP status code to 200 (OK)
     res.status(200).json(allProducts);
 
   } catch (error) {
     
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 
 });
 
-// get one product
+// get one product by id
 router.get('/:id', async (req, res) => {
 
   try {
@@ -49,12 +50,14 @@ router.get('/:id', async (req, res) => {
       ]
     })
 
+    // If the product is successfully found, it responds with a JSON representation of the product and sets the HTTP status code to 200 (OK).
     res.status(200).json(product);
     
   } catch (error) {
     
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 });
@@ -88,26 +91,32 @@ router.post('/', async (req, res) => {
 
   try {
 
-    // Create the product
+    // Create new product using 'Product' model & data from request body
     const product = await Product.create(req.body);
 
     // If there are product tags, create pairings to bulk create in the ProductTag model
     if (req.body.tagIds.length) {
+
+      // creates an array of objects, each representing a pair of 'product_id' and 'tag_id' for bulk creating product tags
       const productTagIdArr = req.body.tagIds.map((tag_id) => ({
         product_id: product.id,
         tag_id,
       }));
 
-      // Bulk create product tags
+      // Asynchronously bulk creates product tags using the array generated in the previous step
       await ProductTag.bulkCreate(productTagIdArr);
+
     }
 
-    // If no product tags, just respond
+    // respond w/a JSON representation of the newly created product
     res.status(200).json(product);
 
   } catch (error) {
+
+    // error handling
     console.error(error);
     res.status(400).json(error);
+
   }
 });
 
@@ -195,6 +204,7 @@ router.put('/:id', async (req, res) => {
     const updatedProduct = await Product.findByPk(req.params.id);
 
     return res.json(updatedProduct);
+
   } catch (err) {
     console.error(err);
     res.status(400).json(err);
@@ -205,19 +215,21 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
   try {
-    // delete one product by its `id` value
+    // delete one product by its `id` primary key
     const deletedProduct = await Product.destroy({
-      where: {
+      where: { // specifies condition of deletion
         id: req.params.id
       }
     })
 
+    //  If the deletion is successful, it responds with a JSON representation of the deleted product and sets the HTTP status code to 200 (OK).
     res.status(200).json(deletedProduct);
 
   } catch (error) {
     
     // error handling
-    res.status(500).json({ message: 'Server error.'});
+    console.error(error);
+    res.status(400).json(error);
 
   }
 
