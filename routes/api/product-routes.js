@@ -166,7 +166,9 @@ router.post('/', async (req, res) => {
 
 // update product
 router.put('/:id', async (req, res) => {
+  
   try {
+
     // Update product data
     const [updatedRowsCount] = await Product.update(req.body, {
       where: {

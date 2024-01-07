@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
 
   try {
 
-  // find one category by its `id` value, include its associated Products
+    // find one category by its `id` value, include its associated Products
     const category = await Category.findByPk(req.params.id, {
       include: [
         {
@@ -51,6 +51,7 @@ router.get('/:id', async (req, res) => {
 
   }
 });
+
 
 // The `/api/categories` endpoint
 router.post('/', async (req, res) => {
@@ -75,6 +76,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   
   try {
+    
     // update a category by its `id` value'
     const updatedCategory = await Category.update(req.body, {
       where: {
