@@ -98,6 +98,8 @@ router.delete('/:id', async (req, res) => {
       }
     });
 
+    res.status(200).json(deletedCategory);
+    
   } catch (error) {
 
     // error handling
